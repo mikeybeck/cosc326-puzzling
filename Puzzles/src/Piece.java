@@ -4,6 +4,7 @@ public class Piece {
 	private Side[] sideArray;
 	private boolean square;
 	private int id;
+	private boolean placed = false;
 	
 	public Piece(int id, boolean square) throws IOException {
 		this.id = id;
@@ -14,7 +15,7 @@ public class Piece {
 	}
 	
 	/**
-	 * returns a matrix of all possible matching sides
+	 * returns a matrix of all possible matching
 	 * sides, which match have true entries, false otherwise
 	 * e.g. piece 1 square, piece 2 triangle
 	 * matrix:
@@ -50,9 +51,18 @@ public class Piece {
 	public void setSides() throws IOException {
 		for(int i = 0; i < sideArray.length; i++) {
 			this.sideArray[i] = new Side();
-			this.sideArray[i].setShape(InOut.getShapeFromUser(i));
-			this.sideArray[i].setColour(InOut.getColourFromUser(i));
-			this.sideArray[i].setOrientation(InOut.getOrientationFromUser(i));
+			this.sideArray[i].setShape(InOut.getShapeFromUser(id, i));
+			this.sideArray[i].setColour(InOut.getColourFromUser(id, i));
+			this.sideArray[i].setOrientation(InOut.getOrientationFromUser(id, i));
+		}
+	}
+	
+	public void placePiece() throws AlreadyPlacedException {
+		if(!(isPlaced())) {
+			throw new AlreadyPlacedException();
+		}
+		else {
+			placed = true;
 		}
 	}
 	
@@ -66,6 +76,10 @@ public class Piece {
 	
 	public boolean getPieceShape() {
 		return this.square;
+	}
+	
+	public boolean isPlaced() {
+		return this.placed;
 	}
 	
 	public Piece clone() {

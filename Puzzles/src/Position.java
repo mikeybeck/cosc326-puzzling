@@ -13,7 +13,7 @@ public class Position {
 	int id;
 	
 	public Position(int id, boolean square, int neighborA, int aSide, int neighborB,
-			int bSide, int neighborC, int cSide) {
+					 int bSide, int neighborC, int cSide) {
 		int neighborD = -1;
 		int dSide = -1;
 		if(square) {
