@@ -12,6 +12,12 @@ public class Puzzle {
 		}
 	}
 	
+	public int[] solve() {
+		int[] sln = new int[pieceCount];
+		//TODO algorithm
+		return sln;
+	}
+	
 	public void setPiece(int id) throws IOException {
 		this.pieces[id] = new Piece(id, InOut.getPieceShapeFromUser(id));
 	}
@@ -20,7 +26,15 @@ public class Puzzle {
 		return this.pieces;
 	}
 	
+	public Piece getPiece(int id) {
+		return this.pieces[id];
+	}
+	
 	public int getPieceCount() {
 		return this.pieceCount;
+	}
+	
+	public void printSln(int[] sln) {
+		//TODO print out
 	}
 }
