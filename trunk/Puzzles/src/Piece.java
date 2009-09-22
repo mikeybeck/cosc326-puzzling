@@ -5,7 +5,7 @@ public class Piece {
 	private boolean square;
 	private int id;
 	private boolean placed = false;
-	
+        
 	public Piece(int id, boolean square) throws IOException {
 		this.id = id;
 		this.square = square;
@@ -13,7 +13,7 @@ public class Piece {
 		else this.sideArray = new Side[3];
 		setSides();
 	}
-	
+        
 	/**
 	 * returns a matrix of all possible matching
 	 * sides, which match have true entries, false otherwise
@@ -47,6 +47,39 @@ public class Piece {
 		if(empty) throw new DontMatchException(); // just to check more easily whether two pieces don't match
 		return matches;
 	}
+   
+	/**
+	 * is there any match between 2 pieces
+	 * -implemented by Scott-
+	 * @param p
+	 * @return boolean
+	 */
+	public boolean hasMatch(Piece p) {
+		if((this.square && !(p.getPieceShape()))
+				|| (!(this.square) && p.getPieceShape())) {
+			for(int i = 0; i < this.sideArray.length; i++) {
+				for(int j = 0; j < p.getSides().length; j++) {
+					if(this.sideArray[i].match(p.getSides()[j])) return true;
+				}
+			}
+		}
+		else return false;
+		return false;
+	}
+	
+	/**
+	 * I'm not sure about the usage (Tobbe)
+	 * -implemented by Nabil-
+	 */
+	public int getMatchingSides(Side side) {
+		int count = 0;
+		for(Side s: sideArray) {
+			if(s.equals(side)) {
+				count++;
+			}
+		}
+		return count;
+	}
 	
 	public void setSides() throws IOException {
 		for(int i = 0; i < sideArray.length; i++) {
@@ -56,7 +89,8 @@ public class Piece {
 			this.sideArray[i].setOrientation(InOut.getOrientationFromUser(id, i));
 		}
 	}
-	
+    
+	// alternative name: setPlaced
 	public void placePiece() throws AlreadyPlacedException {
 		if(!(isPlaced())) {
 			throw new AlreadyPlacedException();
@@ -65,23 +99,23 @@ public class Piece {
 			placed = true;
 		}
 	}
-	
+
 	public int getID() {
 		return id;
 	}
-	
+        
 	public Side[] getSides() {
 		return sideArray;
 	}
-	
+        
 	public boolean getPieceShape() {
 		return this.square;
 	}
-	
+        
 	public boolean isPlaced() {
 		return this.placed;
 	}
-	
+        
 	public Piece clone() {
 		return null;
 		//TODO maybe we need it later - maybe not
