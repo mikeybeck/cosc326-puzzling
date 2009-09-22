@@ -9,5 +9,7 @@ public class Solve {
 		int n = puzzle.getPieceCount();
 		// solution[2] = 3 --> piece.id 3 goes into position 2
 		int[] solution = new int[n];
+		solution = puzzle.solve();
+		puzzle.printSln(solution);
 	}
 }
