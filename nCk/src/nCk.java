@@ -8,7 +8,7 @@ public class nCk {
 		System.out.println("*** nCk ***\n***********");
 		System.out.println("Please enter 'n' followed by 'k' (e.g.: '5 3' for 5C3)");
 		String[] input;
-		int n, k, bin, bin2;
+		int n, k, bin = 0, bin2 = 0, bin3 = 0;
 //		Date start, stop;
 		System.out.println(Integer.MAX_VALUE + " is the biggest possible integer value.");
 		while(true) {
@@ -19,9 +19,13 @@ public class nCk {
 			bin = binCoeff(n, k);
 //			stop = new Date();
 //			System.out.println((stop.getTime() - start.getTime()) + " milsec");
-			if((((n > 33) && ((k > 4) && ((n - k) > 4))) || (bin < 0))) {
-				bin2 = binCoeff((n-1),k);
-				if(((bin2 - bin) < 0) || (bin2 < 0)) {
+			if(n > 33 || bin == -1 || bin < 0) {
+				bin2 = binCoeff(n-1,k-1);
+				bin3 = binCoeff(n-1,k);
+				if(bin2 > bin) {
+					bin = -1;
+				}
+				else if(((bin2 + bin3) != bin) || (bin2 == -1) || (bin3 == -1)) {
 					bin = -1;
 				}
 			}
@@ -36,7 +40,6 @@ public class nCk {
 	
 	public static int binCoeff(int n, int k) {
 		int bin = 0;
-		int kNew = 0;
 		if((n < k) || (k < 0)) { // binomial coefficient not defined for n<k
 			bin = 0;
 		}
@@ -44,7 +47,7 @@ public class nCk {
 			bin = 1;
 		}
 		else {
-			if(n < 13) { // no overflow with factorials smaller than 13
+			if(n < 13) { // no overflow with factorials of values smaller than 13
 				bin = directCalc(n, k);
 			}
 			else if((n >= 2) && ((n - k) == 1 || (k == 1))) { // 1st diagonal
@@ -55,9 +58,6 @@ public class nCk {
 			}
 			else if((n >= 6) && ((k == 3) || ((n - k) == 3))) { // tetrahedral numbers (3rd diagonal)
 				bin = thirdDiag(n, k);
-			}
-			else if((n >= 8) && ((k == 4) || ((n - k) == 4))) { // pentatope numbers (4th diagonal)
-				bin = fourthDiag(n, k);
 			}
 			else  { // direct calculation (recursive)
 				if(k > (n/2)) { // use symmetry of Pascal's triangle
@@ -78,113 +78,72 @@ public class nCk {
 		int calc, calc1;
 		if(even(n)) {
 			calc = n / 2;
+			calc1 = calc * (n-1);
+			if(overflow(calc, n-1, calc1)) return -1;
+			return calc1; // n/2 * (n-1)
 		}
 		else {
 			calc = (n - 1) / 2;
-		}
-		if((calc * 2) != n) {
-			return binCoeff((n - 1), (k - 1)) + binCoeff((n - 1), k);
-		}
-		else {
-			if(even(n)) {
-				calc1 = calc * (n - 1);
-			}
-			else {
-				calc1 = calc * n;
-			}
-			if((calc1 / (n - 1)) != calc) {
-				return binCoeff((n - 1), (k - 1)) + binCoeff((n - 1), k);
-			}
-			else {
-				return calc1;
-			}
+			calc1 = calc * n;
+			if(overflow(calc, n, calc1)) return -1;
+			return calc1; // (n-1)/2 * n
 		}
 	}
 	
 	public static int thirdDiag(int n, int k) { // tetrahedral numbers: (n-2)(n-1)n/6
 		int calc1, calc2, calc3, calc4;
-		if(!even(n) && thirds(n)) {
-			calc1 = n / 3;
-			calc2 = (n - 1) / 2;
-			if(((calc1 * 3) == n) || ((calc2 * 2) == (n - 1))) {
-				calc3 = calc1 * calc2;
-				if((calc3 / calc2) == calc1) {
-					calc4 = calc3 * (n - 2);
-					if((calc4 / (n - 2)) == calc3) {
-						return calc4;
-					}
-				}
-			}
-		}
-		else if(!even(n - 1) && thirds(n - 1)) {
-			calc1 = (n - 1) / 3;
-			calc2 = n / 2;
-			if(((calc1 * 3) == (n - 1)) || ((calc2 * 2) == n)) {
-				calc3 = calc1 * calc2;
-				if((calc3 / calc2) == calc1) {
-					calc4 = calc3 * (n - 2);
-					if((calc4 / (n - 2)) == calc3) {
-						return calc4;
-					}
-				}
-			}
-		}
-		else if(!even(n - 2) && thirds(n - 2)) {
-			calc1 = (n - 2) / 3;
-			calc2 = (n - 1) / 2;
-			if(((calc1 * 3) == (n - 2)) || ((calc2 * 2) == (n - 1))) {
-				calc3 = calc1 * calc2;
-				if((calc3 / calc2) == calc1) {
-					calc4 = calc3 * n;
-					if((calc4 / n) == calc3) {
-						return calc4;
-					}
-				}
-			}
-		}
-		return -1;
-	}
-	
-	public static int fourthDiag(int n, int k) { // pentatope numbers: (n-3)(n-2)(n-1)n/24
-		@SuppressWarnings("unused")
-		int calc, calc1, calc2, calc3, calc4;
 		if(thirds(n)) {
-			calc = n / 3;
-			calc1 = (n - 1) * (n - 3);
-			calc2 = calc1 / 4;
-			if((calc2 * 4) == calc1) {
-				calc3 = (n - 2) / 2;
-				calc4 = calc3 * calc2;
-				if((calc4 / calc3) == calc2) {
-					return calc4;
-				}
+			calc1 = n / 3;
+			if(even(n-1)) {
+				calc2 = (n-1) / 2;
+				calc3 = calc1 * calc2;
+				if(overflow(calc1, calc2, calc3)) return -1;
+				calc4 = calc3 * (n-2);
+				if(overflow(calc3, (n-2), calc4)) return -1;
+				return calc4; // n/3 * (n-1)/2 * (n-2)
+			}
+			else { // even(n-2) == true 
+				calc2 = (n-2) / 2;
+				calc3 = calc1 * calc2;
+				if(overflow(calc1, calc2, calc3)) return -1;
+				calc4 = calc3 * (n-1);
+				if(overflow(calc3, (n-1), calc4)) return -1;
+				return calc4; // n/3 * (n-2)/2 * (n-1)
 			}
 		}
 		else if(thirds(n-1)) {
-			calc = (n - 1) / 3;
-			calc1 = (n - 2) * n;
-			calc2 = calc1 / 4;
-			if((calc2 * 4) == calc1) {
-				calc3 = (n - 3) / 2;
-				calc4 = calc3 * calc2;
-				if((calc4 / calc3) == calc2) {
-					return calc4;
-				}
+			calc1 = (n-1) / 3;
+			if(even(n)) {
+				calc2 = n / 2;
+				calc3 = calc1 * calc2;
+				if(overflow(calc1, calc2, calc3)) return -1;
+				calc4 = calc3 * (n-2);
+				if(overflow(calc3, (n-2), calc4)) return -1;
+				return calc4; // (n-1)/3 * n/2 * (n-2)
+			}
+			else {
+				return binCoeff(n-1,k-1) + binCoeff(n-1,k);
 			}
 		}
-		else { // thirds(n-2)
-			calc = (n - 2) / 3;
-			calc1 = (n - 1) * (n - 3);
-			calc2 = calc1 / 4;
-			if((calc2 * 4) == calc1) {
-				calc3 = n / 2;
-				calc4 = calc3 * calc2;
-				if((calc4 / calc3) == calc2) {
-					return calc4;
-				}
+		else { // thirds(n-2) == true
+			calc1 = (n-2) / 3;
+			if(even(n)) {
+				calc2 = n / 2;
+				calc3 = calc1 * calc2;
+				if(overflow(calc1, calc2, calc3)) return -1;
+				calc4 = calc3 * (n-1);
+				if(overflow(calc3, (n-1), calc4)) return -1;
+				return calc4; // (n-2)/3 * n/2 * (n-1)
+			}
+			else { // even(n-1) == true
+				calc2 = (n-1) / 2;
+				calc3 = calc1 * calc2;
+				if(overflow(calc1, calc2, calc3)) return -1;
+				calc4 = calc3 * n;
+				if(overflow(calc3, n, calc4)) return -1;
+				return calc4; // (n-2)/3 * (n-1)/2 * n
 			}
 		}
-		return -1;
 	}
 	
 	public static int directCalc(int n, int k) { // n<13 -> no overflow
@@ -210,6 +169,10 @@ public class nCk {
 		else return false;
 	}
 	
+	public static boolean overflow(int calc1, int calc2, int calc3) {
+		if((calc3 / calc1) != calc2) return true;
+		else return false;
+	}
 	public static String input() throws IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		return in.readLine();
