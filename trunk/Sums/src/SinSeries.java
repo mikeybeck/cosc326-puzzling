@@ -63,15 +63,13 @@ public class SinSeries {
 //		while(x > (Math.PI)) {
 //			x -= (float)(2 * (float)Math.PI);
 //		}
-		float anm1 = x, an1 = 0, sum = 0, ratio = 0;
+		float anm1 = x, an1 = 0, sum = x, ratio = 0;
 		float xsquare = (float)Math.pow(x, 2);
-		for(int i = 1; i < steps+1; i++) {
+		for(int i = 2; i < steps+1; i++) {
 			ratio = ((2 * i) - 2) * ((2 * i) - 1);
-			if(ratio != 0) {
-				an1 = (float)(-1) * ((xsquare / ratio) * anm1);
-				sum += an1;
-				anm1 = an1;
-			}
+			an1 = (float)(-1) * ((xsquare / ratio) * anm1);
+			sum += an1;
+			anm1 = an1;
 		}
 		return sum;
 	}
@@ -83,16 +81,14 @@ public class SinSeries {
 //		while(x > (Math.PI)) {
 //			x -= (2 * Math.PI);
 //		}
-		double anm1 = x, an1 = 0, sum = 0, ratio = 0;
+		double anm1 = x, an1 = 0, sum = x, ratio = 0;
 		double xsquare = Math.pow(x, 2);
-		for(int i = 1; i < steps+1; i++) {
+		for(int i = 2; i < steps+1; i++) {
 			ratio = ((2 * i) - 2) * ((2 * i) - 1);
-			if(ratio != 0) {
-				an1 = -(xsquare / ratio) * anm1;
-				sum += an1;
-				anm1 = an1;
+			an1 = -(xsquare / ratio) * anm1;
+			sum += an1;
+			anm1 = an1;
 			}
-		}
 		return sum;
 	}
 }
