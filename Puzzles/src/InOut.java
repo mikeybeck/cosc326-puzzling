@@ -1,3 +1,7 @@
+/**
+ * reads in the pieces of the puzzle from an input file of a certain format
+ * 
+ */
 import java.io.*;
 import java.util.*;
 
@@ -10,7 +14,7 @@ public class InOut {
 	public InOut() {  
 		try {
 			f = new File("file");
-			in= new Scanner(f);
+			in = new Scanner(f);
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("oops");
@@ -30,7 +34,7 @@ public class InOut {
 	public static boolean getPieceShapeFromUser(int piece) throws IOException {
 		String line = arr.get(piece).toString();
 		char c = line.charAt(0);
-		if (c =='T'){
+		if (c == 'T'){
 			return false;
 		}
 		else if (c == 'S'){

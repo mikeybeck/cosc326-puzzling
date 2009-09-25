@@ -1,3 +1,15 @@
+/**
+ * representing a side of a piece of a puzzle
+ * 
+ * properties of a side:
+ *  - has got a shape (head or tale)
+ *  - has got a color (represented as a int)
+ *  - has got an orientation (clockwise or not)
+ *  
+ * a side is part of a piece
+ * 
+ */
+
 public class Side {
 	private boolean shape;
 	private int colour;
@@ -21,7 +33,7 @@ public class Side {
 	
 	/**
 	 * the equals-function (from the other point of view)
-	 * two sides match if colour is same and shape and orientation is vice versa
+	 * two sides match if color is same and shape and orientation is vice versa
 	 */
 	public boolean match(Side side) {
 		if((this.colour == side.getColour())
@@ -54,10 +66,5 @@ public class Side {
 	
 	public void setOrientation(boolean orientation) {
 		this.orientation = orientation;
-	}
-	
-	public Side clone() {
-		return null;
-		//TODO maybe we need it later - maybe not
 	}
 }
