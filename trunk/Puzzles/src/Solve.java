@@ -1,5 +1,11 @@
-import java.io.IOException;
+/**
+ * Puzzling
+ *  written by Nabil Boag, Scott Henderson, Nick Frandsen, Torbjoern Klatt
+ *  
+ * Solving a puzzle with given size, structure and pieces
+ */
 
+import java.io.IOException;
 
 public class Solve {
 
@@ -7,9 +13,15 @@ public class Solve {
 		// input all pieces
 		Puzzle puzzle = new Puzzle(InOut.getPieceCountFromUser());
 		int n = puzzle.getPieceCount();
+		
 		// solution[2] = 3 --> piece.id 3 goes into position 2
 		int[] solution = new int[n];
-		solution = puzzle.solve();
-		puzzle.printSln(solution);
+		try {
+			solution = puzzle.solve();
+			puzzle.printSln(solution);
+		}
+		catch (NotSolvableException nse) {
+			System.out.println(nse.getMessage());
+		}
 	}
 }

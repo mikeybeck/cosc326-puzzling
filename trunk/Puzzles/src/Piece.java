@@ -1,3 +1,16 @@
+/**
+ * representing a Piece of the puzzle
+ * 
+ * properties of a piece:
+ *  - has got a shape (square or triangle)
+ *  - has got a certain amount of sides (4 if square; 3 if triangle)
+ *  - has got an unique id
+ *  - can be placed into a position
+ *  
+ * a piece is a part of a puzzle
+ * 
+ */
+
 import java.io.IOException;
 
 public class Piece {
@@ -28,7 +41,6 @@ public class Piece {
 	 * @throws DontMatchException
 	 */
 	public boolean[][] match(Piece piece) throws DontMatchException {
-		int c = 0;
 		boolean[][] matches = new boolean[0][0];
 		boolean empty = true;
 		if((this.square && !(piece.getPieceShape()))
@@ -39,7 +51,6 @@ public class Piece {
 					if(this.sideArray[i].match(piece.getSides()[j])) {
 						matches[i][j] = true;
 						empty = false;
-						c++;
 					}
 				}
 			}
@@ -68,10 +79,36 @@ public class Piece {
 	}
 	
 	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public int[] getMatchingSides(Piece p) {
+		int[] result;
+		int count = 0;
+		for(Side s : this.sideArray) {
+			for(int i = 0; i < 3; i++) {
+				if(s.match(p.getSides()[i])) count++;
+			}
+		}
+		result = new int[count];
+		
+		for(int j = 0; j < this.sideArray.length; j++) {
+			for(int i = 0; i < p.getSides().length; i++) {
+				if(this.sideArray[j].match(p.getSides()[i])) {
+					//TODO ... returning pairs of matching sides (ids)
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
 	 * I'm not sure about the usage (Tobbe)
 	 * -implemented by Nabil-
 	 */
-	public int getMatchingSides(Side side) {
+	public int getMatchingSidesCount(Side side) {
 		int count = 0;
 		for(Side s: sideArray) {
 			if(s.equals(side)) {
@@ -90,7 +127,11 @@ public class Piece {
 		}
 	}
     
-	// alternative name: setPlaced
+	/**
+	 * marks the piece as placed/used
+	 * - alternative method-name: setPlace()
+	 * @throws AlreadyPlacedException
+	 */
 	public void placePiece() throws AlreadyPlacedException {
 		if(!(isPlaced())) {
 			throw new AlreadyPlacedException();
@@ -98,6 +139,13 @@ public class Piece {
 		else {
 			placed = true;
 		}
+	}
+	
+	/**
+	 * takes a placed piece out again, so it can be placed again
+	 */
+	public void releasePiece() {
+		this.placed = false;
 	}
 
 	public int getID() {
@@ -114,10 +162,5 @@ public class Piece {
         
 	public boolean isPlaced() {
 		return this.placed;
-	}
-        
-	public Piece clone() {
-		return null;
-		//TODO maybe we need it later - maybe not
 	}
 }
