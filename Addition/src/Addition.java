@@ -12,7 +12,7 @@ public class Addition {
 		String input;
 		String[] inputSplit;
 		int base;
-		int[] value1, value2, add, addN;
+		int[] value1, value2, add;
 		
 		System.out.println("*** ADDITION ***\n****************");
 		System.out.println("Please enter two numbers and their base. (e.g. \"1234 56789 10\")");
@@ -25,14 +25,14 @@ public class Addition {
 			else {
 				base = Integer.parseInt(inputSplit[2]);
 				
-				inputSplit[0] = "4625152";
-				inputSplit[1] = "5356106";
-				base = 7;
+//				inputSplit[0] = "4625152";
+//				inputSplit[1] = "5356106";
+//				base = 7;
 				// ==> add: 13314261
 				// ==> div: 
-//				inputSplit[0] = "573916";
-//				inputSplit[1] = "73897261";
-//				base = 10;
+				inputSplit[0] = "573916";
+				inputSplit[1] = "73897261";
+				base = 10;
 				// ==> add: 74471177
 				// ==> div: 37235588 + 1
 				
@@ -51,19 +51,7 @@ public class Addition {
 					add = add(value1, value2, base);
 					System.out.println(intArray2String(value1) + "+" + intArray2String(value2) + " of base " + base + " is " + intArray2String(add));
 					
-					int i = 0, count = 0;
-					while((add[i] == 0) && (i < add.length)) {
-						count++;
-						i++;
-					}
-					
-					if(count > 0) {
-						addN = new int[add.length - count];
-						for(int j = 0; j < addN.length; j++) {
-							addN[j] = add[j+count];
-						}
-						add = addN;
-					}
+					add = cutOffLeadingNull(add);
 					
 					devide(add, base);
 				}
@@ -93,20 +81,20 @@ public class Addition {
 			sum = valA + valB;
 			
 			if(remain == 0) {
-				if(sum <= base) {
+				if(sum < base) {
 					sln[posS] = sum;
 				}
-				else { // sum > base
+				else { // sum >= base
 					sln[posS] = sum - base;
 					remain = 1;
 				}
 			}
 			else { // remain > 0
-				if((sum + remain) <= base) {
+				if((sum + remain) < base) {
 					sln[posS] = sum + remain;
 					remain = 0;
 				}
-				else { // (sum + remain) > base
+				else { // (sum + remain) => base
 					sum += remain;
 					sln[posS] = sum % base;
 					remain = (sum - (sum % base)) / base;
@@ -117,6 +105,12 @@ public class Addition {
 		return sln;
 	}
 	
+	/**
+	 * is not working properly! is producing wrong results for other bases than 10
+	 * @param a
+	 * @param base
+	 */
+	//TODO correct the code
 	public static void devide(int[] a, int base) {
 		int[] sln = new int[a.length];
 		int val, sub, rem = 0;
@@ -126,20 +120,36 @@ public class Addition {
 				rem = val % 2;
 				if(rem == 0) {
 					sub = val / 2;
-					if(sub <= base) {
+					if(sub < base) {
 						sln[i] = sub;
 					}
-					else { // sub > base
-						//TODO
+					else { // sub >= base
+						sln[i] = sub - base;
+						for(int j = 1; j < i+1; j++) {
+							sln[i-j]++;
+							if(sln[i-j] < base) j = i+1;
+							else {
+								if(sln[i-j] == base) sln[i-j] = 0;
+								else sln[i-j] -= base;
+							}
+						}
 					}
 				}
 				else { // rem == 1
 					sub = (val - 1) / 2;
-					if(sub <= base) {
+					if(sub < base) {
 						sln[i] = sub;
 					}
-					else { // sub > base
-						//TODO
+					else { // sub >= base
+						sln[i] = sub - base;
+						for(int j = 1; j < i+1; j++) {
+							sln[i-j]++;
+							if(sln[i-j] < base) j = i+1;
+							else {
+								if(sln[i-j] == base) sln[i-j] = 0;
+								else sln[i-j] -= base;
+							}
+						}
 					}
 				}
 			}
@@ -148,7 +158,34 @@ public class Addition {
 				rem = val;
 			}
 		}
+		
+		// check the solution
+		int[] chk = add(sln, sln, base);
+		chk = cutOffLeadingNull(chk);
+		chk[chk.length-1]++;
+		System.out.println(intArray2String(chk) + "\n" + intArray2String(a));
+		// end of check
+		
+		// final output
 		System.out.println(intArray2String(a) + " by 2 in base of " + base + " is " + intArray2String(sln) + " and a remainer of " + rem);
+	}
+	
+	public static int[] cutOffLeadingNull(int[] a) {
+		int i = 0, count = 0;
+		int[] aN;
+		while((a[i] == 0) && (i < a.length)) {
+			count++;
+			i++;
+		}
+		
+		if(count > 0) {
+			aN = new int[a.length - count];
+			for(int j = 0; j < aN.length; j++) {
+				aN[j] = a[j+count];
+			}
+			return aN;
+		}
+		else return a;
 	}
 
 	public static String getUserInput() throws IOException {
