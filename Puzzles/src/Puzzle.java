@@ -187,7 +187,40 @@ public class Puzzle {
  	 * prints out the solution of the puzzle in an appropriate way
  	 * @param sln
  	 */
+ 	/*
+ 	 * example of printout:
+ 	 *          ____
+ 	 *          \7 /\
+ 	 *           \/E \
+ 	 *        ---|\  /
+ 	 *        |D |6\/__
+ 	 *        |  | /\8 /
+  	 *    ____|__|/  \/
+ 	 *   /\4 /\5 /\F /
+ 	 *  /B \/C \/  \/
+ 	 * |\  /\  /
+ 	 * |3\/2 \/
+ 	 * ------|\
+ 	 *    |  | \
+ 	 *    |A |1/
+ 	 *    |__|/
+ 	 */
  	public void printSln(int[] sln) {
- 		//TODO ??? in which way shall we print out the solution ???
+ 		System.out.println("The puzzle could be solved and the solutio looks like this:");
+ 		System.out.println("         ____");
+ 		System.out.println("         \\" + "7" + " /\\");
+ 		System.out.println("          \\/" + "E" + " \\");
+ 		System.out.println("       ---|\\  /");
+ 		System.out.println("       |" + "D" + " |" + "6" + "\\/__");
+ 		System.out.println("       |  | /\\" + "8" + " /");
+ 		System.out.println("   ____|__|/  \\/");
+ 		System.out.println("  /\\" + "4" + " /\\" + "5" + " /\\" + "F" + " /");
+ 		System.out.println(" /" + "B" + " \\/" + "C" + " \\/  \\/");
+ 		System.out.println("|\\  /\\  /");
+ 		System.out.println("|" + "3" + "\\/" + "2" + " \\/");
+ 		System.out.println("------|\\");
+ 		System.out.println("   |  | \\");
+ 		System.out.println("   |" + "A" + " |" + "1" + "/");
+ 		System.out.println("   |__|/");
  	}
 }
