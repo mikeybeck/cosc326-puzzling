@@ -45,16 +45,82 @@ public class Solvable {
 	
 	// Checks to see if there are any sides that don't have a match, if they don't, the puzzle can not be solved. 
 	public boolean canBeSolved(Puzzle puzzle){
-		if((puzzle.getMatchingSideCount(yta) == puzzle.getMatchingSideCount(yhc))
-				&& (puzzle.getMatchingSideCount(ytc) == puzzle.getMatchingSideCount(yha))
-				&& (puzzle.getMatchingSideCount(rta) == puzzle.getMatchingSideCount(rhc))
-				&& (puzzle.getMatchingSideCount(rtc) == puzzle.getMatchingSideCount(rha))
-				&& (puzzle.getMatchingSideCount(gta) == puzzle.getMatchingSideCount(ghc))
-				&& (puzzle.getMatchingSideCount(gtc) == puzzle.getMatchingSideCount(gha))
-				&& (puzzle.getMatchingSideCount(bta) == puzzle.getMatchingSideCount(bhc))
-				&& (puzzle.getMatchingSideCount(btc) == puzzle.getMatchingSideCount(bha))) {
-			return true;
+		int ytacount = 0;
+		int yhccount = 0;
+		int ytccount = 0;
+		int yhacount = 0;
+		int rtacount = 0;
+		int rhccount = 0;
+		int rtccount = 0;
+		int rhacount = 0;
+		int gtacount = 0;
+		int ghccount = 0;
+		int gtccount = 0;
+		int ghacount = 0;
+		int btacount = 0;
+		int bhccount = 0;
+		int btccount = 0;
+		int bhacount = 0;
+		
+		Piece[] pieces = puzzle.getPieces();
+		int tempcount = 0;
+		int tempcount2 = 0;
+		for(Piece piece: pieces){
+				tempcount ++;
+				Side[] sides = piece.getSides();
+				for(Side side: sides){
+					tempcount2++;
+					if(side.equals(yta)){
+						
+						ytacount ++;
+					}
+					else if(side.equals(yhc)){
+						yhccount ++;
+					}
+					else if(side.equals(ytc)){
+						ytccount ++;
+					}
+					else if(side.equals(yha)){
+						yhacount ++;
+					}
+					else if(side.equals(rta)){
+						rtacount ++;
+					}
+					else if(side.equals(rhc)){
+						rhccount ++;
+					}
+					else if(side.equals(rtc)){
+						rtccount ++;
+					}
+					else if(side.equals(rha)){
+						rhacount ++;
+					}
+					else if(side.equals(gta)){
+						gtacount ++;
+					}
+					else if(side.equals(ghc)){
+						ghccount ++;
+					}
+					else if(side.equals(gtc)){
+						gtccount ++;
+					}
+					else if(side.equals(gha)){
+						ghacount ++;
+					}
+					else if(side.equals(bta)){
+						btacount ++;
+					}
+					else if(side.equals(bhc)){
+						bhccount ++;
+					}
+					else if(side.equals(btc)){
+						btccount ++;
+					}
+					else if(side.equals(bha)){
+						bhacount ++;
+					}
+				}
 		}
-		else return false;
+		return ((ytacount == yhccount)&&(yhacount == ytccount)&&(rtacount == rhccount)&&(rhacount == rtccount)&&(gtacount == ghccount)&&(ghacount == gtccount)&&(btacount == bhccount)&&(bhacount == btccount));
 	}
 }
