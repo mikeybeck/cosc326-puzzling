@@ -14,12 +14,14 @@
 import java.io.IOException;
 
 public class Piece {
+	private InOut in;
 	private Side[] sideArray;
 	private boolean square;
 	private int id;
 	private boolean placed = false;
         
-	public Piece(int id, boolean square) throws IOException {
+	public Piece(int id, boolean square, InOut in) throws IOException {
+		this.in = in;
 		this.id = id;
 		this.square = square;
 		if(square) this.sideArray = new Side[4];
@@ -104,26 +106,12 @@ public class Piece {
 		return result;
 	}
 	
-	/**
-	 * I'm not sure about the usage (Tobbe)
-	 * -implemented by Nabil-
-	 */
-	public int getMatchingSidesCount(Side side) {
-		int count = 0;
-		for(Side s: sideArray) {
-			if(s.equals(side)) {
-				count++;
-			}
-		}
-		return count;
-	}
-	
 	public void setSides() throws IOException {
 		for(int i = 0; i < sideArray.length; i++) {
 			this.sideArray[i] = new Side();
-			this.sideArray[i].setShape(InOut.getShapeFromUser(id, i));
-			this.sideArray[i].setColour(InOut.getColourFromUser(id, i));
-			this.sideArray[i].setOrientation(InOut.getOrientationFromUser(id, i));
+			this.sideArray[i].setShape(in.getShapeFromUser(id, i+1));
+			this.sideArray[i].setColour(in.getColourFromUser(id, i+1));
+			this.sideArray[i].setOrientation(in.getOrientationFromUser(id, i+1));
 		}
 	}
     

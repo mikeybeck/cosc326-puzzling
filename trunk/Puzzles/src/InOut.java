@@ -7,13 +7,13 @@ import java.util.*;
 
 public class InOut {	
     
-	private static File f;
-	private static Scanner in;
-	private static ArrayList<String> arr = new ArrayList<String>();
+	private File f;
+	private Scanner in;
+	private ArrayList<String> arr = new ArrayList<String>();
    
-	public InOut() {  
+	public InOut(String file) {
 		try {
-			f = new File("file");
+			f = new File(file);
 			in = new Scanner(f);
 		}
 		catch(FileNotFoundException e) {
@@ -23,15 +23,36 @@ public class InOut {
 		while(in.hasNext()) {
 			arr.add(in.nextLine());
 		}
+		
+	}
+	
+	public Position getPosition(int id) throws IOException {
+		String line = arr.get(id).toString();
+		String[] lineSplit = line.split(",");
+		int[] intArr = new int[lineSplit.length];
+		Position pos;
+		for(int i = 0; i < lineSplit.length; i++) {
+			intArr[i] = Integer.parseInt(lineSplit[i]);
+		}
+		if(intArr.length == 6) { // triangle
+			pos = new Position(id, intArr[0], intArr[1], intArr[2], intArr[3], intArr[4], intArr[5]);
+		}
+		else if(intArr.length == 8) { // square
+			pos = new Position(id, intArr[0], intArr[1], intArr[2], intArr[3], intArr[4], intArr[5], intArr[6], intArr[7]);
+		}
+		else {
+			throw new IOException();
+		}
+		return pos;
 	}
 
 	//Piece count
-	public static int getPieceCountFromUser() throws IOException {
+	public int getPieceCountFromUser() throws IOException {
 		return arr.size();
 	}
    
 	//Triangle or square
-	public static boolean getPieceShapeFromUser(int piece) throws IOException {
+	public boolean getPieceShapeFromUser(int piece) throws IOException {
 		String line = arr.get(piece).toString();
 		char c = line.charAt(0);
 		if (c == 'T'){
@@ -46,7 +67,7 @@ public class InOut {
 	}
 
 	//Colour
-	public static int getColourFromUser(int piece, int side) throws IOException {
+	public int getColourFromUser(int piece, int side) throws IOException {
        String line = arr.get(piece).toString();
        char c = ' ';
         if(side == 1) {
@@ -79,8 +100,9 @@ public class InOut {
 	}
 
 	//Heads or tail
-	public static boolean getShapeFromUser(int piece, int side) throws IOException {
+	public boolean getShapeFromUser(int piece, int side) throws IOException {
 		String line = arr.get(piece).toString();
+		
 		char c = ' ';
 		if(side == 1) {
 			c = line.charAt(2);
@@ -106,7 +128,7 @@ public class InOut {
 	}
 
 	//Orientation
-	public static boolean getOrientationFromUser(int piece, int side) throws IOException {
+	public boolean getOrientationFromUser(int piece, int side) throws IOException {
 		String line = arr.get(piece).toString();
 		char c = ' ';
 		if(side == 1) {

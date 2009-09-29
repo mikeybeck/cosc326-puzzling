@@ -14,6 +14,7 @@ public class Side {
 	private boolean shape;
 	private int colour;
 	private boolean orientation;
+	private boolean matched = false;
 	
 	public Side() {
 		this.shape = true;
@@ -33,7 +34,7 @@ public class Side {
 	
 	/**
 	 * the equals-function (from the other point of view)
-	 * two sides match if color is same and shape and orientation is vice versa
+	 * two sides match if colour is same and shape and orientation is vice versa
 	 */
 	public boolean match(Side side) {
 		if((this.colour == side.getColour())
@@ -42,6 +43,16 @@ public class Side {
 			return true;
 		}
 		else return false;
+	}
+	
+	// Tells us if a given side is the same as this one
+	public boolean equals(Side side) {
+	if((this.colour == side.getColour())
+	  && (this.shape == side.getShape())
+	  && (this.orientation == side.getOrientation())) {
+	return true;
+	}
+	else return false;
 	}
 	
 	public boolean getShape() {
@@ -66,5 +77,10 @@ public class Side {
 	
 	public void setOrientation(boolean orientation) {
 		this.orientation = orientation;
+	}
+	
+	public void placeSide() throws AlreadyPlacedException {
+		if(matched) throw new AlreadyPlacedException();
+		else this.matched = true;
 	}
 }
