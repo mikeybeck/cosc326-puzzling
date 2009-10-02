@@ -68,7 +68,7 @@ public class HarmonicSums {
   }
   
   public static float harmonicSum(int steps) {
-    float sum = 1;
+    float sum = 0;
     for(int i = 1; i < steps+1; i++) {
       sum += (float)((float)1 / (float)i);
     }
@@ -80,12 +80,11 @@ public class HarmonicSums {
     for(int i = steps; i > 0; i--) {
       sum += (float)((float)1 / (float)i);
     }
-    sum++;
     return sum;
   }
   
   public static double harmonicSumDouble(int steps) {
-    double sum = 1;
+    double sum = 0;
     for(int i = 1; i < steps+1; i++) {
       sum += (double)( (double)1 / (double)i);
     }
@@ -97,7 +96,6 @@ public class HarmonicSums {
     for(int i = steps; i > 0; i--) {
       sum += (double)((double)1 / (double)i);
     }
-    sum++;
     return sum;
   }
 }
