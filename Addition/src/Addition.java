@@ -4,20 +4,24 @@ import java.io.InputStreamReader;
 
 /**
  * @author Torbjoern Klatt
- *
+ * 
+ * IMPORTANT!!!
+ * TODO the input is not working 100% perfect. entering a whole input-file results in a NullPointerException after the first line
+ * IMPORTANT!!!
  */
 public class Addition {
+	static int remainder;
 
 	public static void main(String[] args) throws IOException {
 		String input;
 		String[] inputSplit;
 		int base;
-		int[] value1, value2, add;
+		int[] value1, value2, add, dev;
 		
 		System.out.println("*** ADDITION ***\n****************");
-		System.out.println("Please enter two numbers and their base. (e.g. \"1234 56789 10\")");
+		System.out.println("Please enter two numbers and their base. (e.g. \"1234 56789 10\" for first two numbers in base 10)");
 		do {
-			input = getUserInput();
+			input = input().trim();
 			inputSplit = input.split(" ");
 			if(inputSplit.length != 3) {
 				System.out.println("Wrong input. (could not detect three values)");
@@ -25,14 +29,20 @@ public class Addition {
 			else {
 				base = Integer.parseInt(inputSplit[2]);
 				
+				// some test-data
+//				inputSplit[0] = "1000111";
+//				inputSplit[1] = "111000";
+//				base = 2;
+				// ==> add: 1111111
+				// ==> div: 1111110
 //				inputSplit[0] = "4625152";
 //				inputSplit[1] = "5356106";
 //				base = 7;
 				// ==> add: 13314261
-				// ==> div: 
-				inputSplit[0] = "573916";
-				inputSplit[1] = "73897261";
-				base = 10;
+				// ==> div: 5142130 + 1
+//				inputSplit[0] = "573916";
+//				inputSplit[1] = "73897261";
+//				base = 10;
 				// ==> add: 74471177
 				// ==> div: 37235588 + 1
 				
@@ -48,12 +58,13 @@ public class Addition {
 						value2[i] = Integer.parseInt(inputSplit[1].substring(i, i+1));
 					}
 					
-					add = add(value1, value2, base);
-					System.out.println(intArray2String(value1) + "+" + intArray2String(value2) + " of base " + base + " is " + intArray2String(add));
+					// calculations
+					add = cutOffLeadingNull(add(value1, value2, base));
+					dev = cutOffLeadingNull(devide(add, base));
 					
-					add = cutOffLeadingNull(add);
-					
-					devide(add, base);
+					// output
+					System.out.println(toString(value1) + "+" + toString(value2) + "=" + toString(add) + " //base " + base);
+					System.out.println(toString(add) + "/" + 2 + "=" + toString(dev) + " //base" + base);
 				}
 				else {
 					System.out.println("Invalid base. (" + base + ")");
@@ -105,69 +116,43 @@ public class Addition {
 		return sln;
 	}
 	
-	/**
-	 * is not working properly! is producing wrong results for other bases than 10
-	 * @param a
-	 * @param base
+	/*
+	 * methodology of dividing by 2
+	 * (base 7)
+	 * 1345 : 2 = 554 + 1
+	 * 13>--------/||   |
+	 * --||        ||   |
+	 *  04|        ||   |
+	 *  04>--------/|   |
+	 *  --|         |   |
+	 *   05         |   |
+	 *   04>--------/   |
+	 *   --             |
+	 *    1>------------/
 	 */
-	//TODO correct the code
-	public static void devide(int[] a, int base) {
+	public static int[] devide(int[] a, int base) {
 		int[] sln = new int[a.length];
-		int val, sub, rem = 0;
+		int val, rem = 0;
+		
 		for(int i = 0; i < a.length; i++) {
-			val = a[i] + (10 * rem);
+			val = (base * rem) + a[i];
 			if(val > 1) {
 				rem = val % 2;
 				if(rem == 0) {
-					sub = val / 2;
-					if(sub < base) {
-						sln[i] = sub;
-					}
-					else { // sub >= base
-						sln[i] = sub - base;
-						for(int j = 1; j < i+1; j++) {
-							sln[i-j]++;
-							if(sln[i-j] < base) j = i+1;
-							else {
-								if(sln[i-j] == base) sln[i-j] = 0;
-								else sln[i-j] -= base;
-							}
-						}
-					}
+					sln[i] = val / 2;
 				}
 				else { // rem == 1
-					sub = (val - 1) / 2;
-					if(sub < base) {
-						sln[i] = sub;
-					}
-					else { // sub >= base
-						sln[i] = sub - base;
-						for(int j = 1; j < i+1; j++) {
-							sln[i-j]++;
-							if(sln[i-j] < base) j = i+1;
-							else {
-								if(sln[i-j] == base) sln[i-j] = 0;
-								else sln[i-j] -= base;
-							}
-						}
-					}
+					sln[i] = (val - 1) / 2;
 				}
 			}
-			else {
+			else { // a[i] < 2
+				rem = a[i];
 				sln[i] = 0;
-				rem = val;
 			}
 		}
 		
-		// check the solution
-		int[] chk = add(sln, sln, base);
-		chk = cutOffLeadingNull(chk);
-		chk[chk.length-1]++;
-		System.out.println(intArray2String(chk) + "\n" + intArray2String(a));
-		// end of check
-		
-		// final output
-		System.out.println(intArray2String(a) + " by 2 in base of " + base + " is " + intArray2String(sln) + " and a remainer of " + rem);
+		remainder = rem;
+		return sln;
 	}
 	
 	public static int[] cutOffLeadingNull(int[] a) {
@@ -188,12 +173,12 @@ public class Addition {
 		else return a;
 	}
 
-	public static String getUserInput() throws IOException {
+	public static String input() throws IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		return in.readLine();
 	}
 	
-	public static String intArray2String(int[] a) {
+	public static String toString(int[] a) {
 		String out = "";
 		int i = 0;
 		if(a[i] == 0) i++;
