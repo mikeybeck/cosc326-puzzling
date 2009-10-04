@@ -27,10 +27,10 @@ public class BreedingToads {
 	}
 	
 	/**
-	 * reads in the toads from the file "Toats.in"
+	 * reads in the toads from the file "Toads.in"
 	 */
 	public void readInput() {
-		FileInput in = new FileInput("Toats.in");
+		FileInput in = new FileInput("Toads.in");
 		String[] inStr;
 		double x, y;
 		for(int i = 0; i < in.getLineCount(); i++) {
@@ -38,20 +38,20 @@ public class BreedingToads {
 			if(inStr.length == 2) {
 				x = Double.parseDouble(inStr[0]);
 				y = Double.parseDouble(inStr[1]);
-				toads.add(i, new Toad(i,x,y));
+				toads.add(new Toad(i,x,y));
 			}
 		}
 	}
 	
 	public void printAllToads() {
 		for(int i = 0; i < toads.size(); i++) {
-            System.out.println("\nToad " + i + " is (" + toads.get(i).x + ", " + toads.get(i).y + ") with id " + toads.get(i).id);                                                                                                              
-            System.out.println("Nearest:");                                                                       
-            for(int j = 0; j < 12; j++) {                                                                          
-            	System.out.print(toads.get(i).nearest[j].id + ", ");                                          
-            }                                                                                                     
+            System.out.println("Toad " + (i+1) + " is (" + toads.get(i).x + ", " + toads.get(i).y + ") with id " + toads.get(i).id);                                                                                                              
+//            System.out.println("Nearest:");                                                                       
+//            for(int j = 0; j < 12; j++) {                                                                          
+//            	System.out.print(toads.get(i).nearest[j].id + ", ");                                          
+//            }                                                                                                     
             System.out.println("Radius: " + toads.get(i).circleRadius);                                           
-            System.out.println("\n");    
+//            System.out.println("\n");    
 		}
 	}                                          
 
@@ -69,7 +69,7 @@ public class BreedingToads {
 	 * 
 	 *
 	 */
-	public class Toad{
+	public class Toad {
 		int id;
 		double x, y;
 		Toad[] nearest = new Toad[13];
