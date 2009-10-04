@@ -11,28 +11,27 @@ public class InOut {
 	private Scanner in;
 	private ArrayList<String> arr = new ArrayList<String>();
    
-	public InOut(String file) {
+	public InOut(String inFile) {
 		try {
-			f = new File(file);
+			f = new File(inFile);
 			in = new Scanner(f);
+
+			while(in.hasNext()) {
+				arr.add(in.nextLine());
+			}
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("oops");
 		}
-
-		while(in.hasNext()) {
-			arr.add(in.nextLine());
-		}
-		
 	}
 	
 	public Position getPosition(int id) throws IOException {
-		String line = arr.get(id).toString();
+		String line = arr.get(id).toString().trim();
 		String[] lineSplit = line.split(",");
 		int[] intArr = new int[lineSplit.length];
 		Position pos;
 		for(int i = 0; i < lineSplit.length; i++) {
-			intArr[i] = Integer.parseInt(lineSplit[i]);
+			intArr[i] = Integer.parseInt(lineSplit[i].trim());
 		}
 		if(intArr.length == 6) { // triangle
 			pos = new Position(id, intArr[0], intArr[1], intArr[2], intArr[3], intArr[4], intArr[5]);

@@ -12,6 +12,7 @@
  */
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Piece {
 	private InOut in;
@@ -79,30 +80,26 @@ public class Piece {
 		else return false;
 		return false;
 	}
+
+
 	
 	/**
 	 * 
 	 * @param p
 	 * @return
 	 */
-	public int[] getMatchingSides(Piece p) {
-		int[] result;
-		int count = 0;
-		for(Side s : this.sideArray) {
-			for(int i = 0; i < 3; i++) {
-				if(s.match(p.getSides()[i])) count++;
-			}
-		}
-		result = new int[count];
-		
+	public ArrayList<int[]> getMatchingSides(Piece p) {
+		ArrayList<int[]> result = new ArrayList<int[]>();
+		int[] match = new int[2];
 		for(int j = 0; j < this.sideArray.length; j++) {
 			for(int i = 0; i < p.getSides().length; i++) {
 				if(this.sideArray[j].match(p.getSides()[i])) {
-					//TODO ... returning pairs of matching sides (ids)
+					match[0] = i;
+					match[1] = j;
+					result.add(match);
 				}
 			}
 		}
-		
 		return result;
 	}
 	
@@ -127,6 +124,30 @@ public class Piece {
 		else {
 			placed = true;
 		}
+	}
+	
+	/**
+	 * rotates a piece
+	 * @return
+	 * @throws IOException
+	 */
+	public Piece rotate() throws IOException {
+		Piece tempP = new Piece(this.id, this.square, this.in);
+		Side tempS;
+		if(tempP.square) {
+			tempS = tempP.sideArray[0];
+			tempP.sideArray[0] = tempP.sideArray[1];
+			tempP.sideArray[1] = tempP.sideArray[2];
+			tempP.sideArray[2] = tempP.sideArray[3];
+			tempP.sideArray[3] = tempS;
+		}
+		else {
+			tempS = tempP.sideArray[0];
+			tempP.sideArray[0] = tempP.sideArray[1];
+			tempP.sideArray[1] = tempP.sideArray[2];
+			tempP.sideArray[2] = tempS;
+		}
+		return tempP;
 	}
 	
 	/**

@@ -20,6 +20,7 @@ public class Position {
 	// stores neighboring sides by piece and side order by side
 	private int[][] neighbors; 
 	private int id;
+	private int[] plugged; // plugged[0]=pieceID, plugged[1]=sideID matching to neighbor A
 	
 	/**
 	 * constructor for triangles
@@ -122,6 +123,20 @@ public class Position {
 		}
 		return false;
 	}
+	
+	/**
+	 * plugs in a piece into a position by mentioning the side, which is pointing to neighbor A
+	 * @param p
+	 * @throws AlreadyPlacedException
+	 */
+	public void pluginPiece(Piece p, int sideA) throws AlreadyPlacedException {
+		if(p.isPlaced()) throw new AlreadyPlacedException();
+		else {
+			p.placePiece();
+			this.plugged[0] = p.getID();
+			this.plugged[1] = sideA;
+		}
+	}
 
 	@Override
 	public String toString() {
@@ -130,5 +145,10 @@ public class Position {
 			str += " " + neighbors[3][0] + "-" + neighbors[3][1];
 		}
 		return str;
+	}
+	
+	public boolean getShape() {
+		if(this.neighbors.length == 4) return true;
+		else return false;
 	}
 }
