@@ -15,6 +15,7 @@ public class Side {
 	private int colour;
 	private boolean orientation;
 	private boolean matched = false;
+	private int[] matchedSide = {-1,-1};
 	
 	public Side() {
 		this.shape = true;
@@ -47,12 +48,12 @@ public class Side {
 	
 	// Tells us if a given side is the same as this one
 	public boolean equals(Side side) {
-	if((this.colour == side.getColour())
-	  && (this.shape == side.getShape())
-	  && (this.orientation == side.getOrientation())) {
-	return true;
-	}
-	else return false;
+		if((this.colour == side.getColour())
+		  && (this.shape == side.getShape())
+		  && (this.orientation == side.getOrientation())) {
+			return true;
+		}
+		else return false;
 	}
 	
 	public boolean getShape() {
@@ -79,8 +80,20 @@ public class Side {
 		this.orientation = orientation;
 	}
 	
-	public void placeSide() throws AlreadyPlacedException {
+	public void placeSide(int pieceID, int sideID) throws AlreadyPlacedException {
 		if(matched) throw new AlreadyPlacedException();
-		else this.matched = true;
+		else {
+			this.matched = true;
+			this.matchedSide[0] = pieceID;
+			this.matchedSide[1] = sideID;
+		}
+	}
+	
+	public boolean isMatched() {
+		return this.matched;
+	}
+	
+	public int[] getMatch() {
+		return this.matchedSide;
 	}
 }
