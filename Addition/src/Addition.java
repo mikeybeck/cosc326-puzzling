@@ -1,13 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 /**
- * @author Torbjoern Klatt
- * 
- * IMPORTANT!!!
- * TODO the input is not working 100% perfect. entering a whole input-file results in a NullPointerException after the first line
- * IMPORTANT!!!
+ * @author Torbjoern Klatt, Nabil Boag
  */
 public class Addition {
 	static int remainder;
@@ -20,8 +17,9 @@ public class Addition {
 		
 		System.out.println("*** ADDITION ***\n****************");
 		System.out.println("Please enter two numbers and their base. (e.g. \"1234 56789 10\" for first two numbers in base 10)");
-		do {
-			input = input().trim();
+		Scanner in = new Scanner(System.in);
+		while(in.hasNext()) {
+			input = in.nextLine().trim();
 			inputSplit = input.split(" ");
 			if(inputSplit.length != 3) {
 				System.out.println("Wrong input. (could not detect three values)");
@@ -63,15 +61,16 @@ public class Addition {
 					dev = cutOffLeadingNull(devide(add, base));
 					
 					// output
-					System.out.println(toString(value1) + "+" + toString(value2) + "=" + toString(add) + " //base " + base);
-					System.out.println(toString(add) + "/" + 2 + "=" + toString(dev) + " //base" + base);
+					System.out.println("\n*** (base of " + base + ")");
+					System.out.println(toString(value1) + "\n" + toString(value2));
+					System.out.println("Addition: " + toString(add));
+					System.out.println("Division: " + toString(dev) + " + remainder of " + remainder);
 				}
 				else {
 					System.out.println("Invalid base. (" + base + ")");
 				}
 			}
 		}
-		while(true);
 	}
 	
 	public static int[] add(int[] a, int[] b, int base) {
