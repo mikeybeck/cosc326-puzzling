@@ -53,7 +53,7 @@ public class SinSeries {
         System.out.println("x=0.995:  " + (double)(Math.abs(d2 - bd2)));
         System.out.println("x=0.994:  " + (double)(Math.abs(d3 - bd3)));
         System.out.println("x=12.345: " + (double)(Math.abs(d4 - bd4)));
-//        System.out.println("x=PI:" + Math.sin(Math.PI/2) + " " + sinSerieD(5000,(Math.PI/2)));
+        System.out.println("x=123.45:" + Math.sin(123.45) + " " + sinSerieD(5000,123.45) + " " + sinSerieS(5000,(float) 123.45));
     }
     
     public static float sinSerieS(int steps, float x) {
